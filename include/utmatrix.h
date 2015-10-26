@@ -53,8 +53,10 @@ public:
   }
   friend ostream& operator<<(ostream &out, const TVector &v)
   {
-    for (int i = 0; i < v.Size; i++)
-      out << v.pVector[i] << ' ';
+    for (int i = 0; i < v.StartIndex; i++)
+		out << "0" << "\t";
+	for (int i = v.StartIndex; i < v.Size; i++)
+		out << v.pVector[i] << "\t";
     return out;
   }
 };
@@ -242,9 +244,9 @@ TMatrix<ValType>::TMatrix(int s): TVector<TVector<ValType> >(s)
 	if ((s < 0)||(s > MAX_MATRIX_SIZE)) throw "INVALIDE_SIZE_OF_MATRIX";
 	for (int i = 0; i < s; i++)
 		pVector[i] = TVector<ValType>(s, i);
-	/*for (int i = StartIndex; i < s; i++)
-		for (int j = StartIndex; j < s; j++)
-			pVector[i][j] = 0;*/
+	for (int i = 0; i < s; i++)
+		for (int j = i; j < s; j++)
+			pVector[i][j] = 0;
 } /*-------------------------------------------------------------------------*/
 
 template <class ValType> // конструктор копирования
