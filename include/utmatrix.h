@@ -242,9 +242,9 @@ TMatrix<ValType>::TMatrix(int s): TVector<TVector<ValType> >(s)
 	if ((s < 0)||(s > MAX_MATRIX_SIZE)) throw "INVALIDE_SIZE_OF_MATRIX";
 	for (int i = 0; i < s; i++)
 		pVector[i] = TVector<ValType>(s, i);
-	for (int i = 0; i < s; i++)
-		for (int j = 0; j < s; j++)
-			pVector[i][j] = 0;
+	/*for (int i = StartIndex; i < s; i++)
+		for (int j = StartIndex; j < s; j++)
+			pVector[i][j] = 0;*/
 } /*-------------------------------------------------------------------------*/
 
 template <class ValType> // конструктор копирования

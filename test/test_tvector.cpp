@@ -32,9 +32,12 @@ TEST(TVector, can_create_copied_vector)
 TEST(TVector, copied_vector_is_equal_to_source_one)
 {
   TVector<int> v1(15);
-  v1[7]=1;
+  v1[7] = 1;
   TVector<int> v2(v1);
-  EXPECT_EQ(v1, v2);
+  TVector<int> expv(15);
+  expv[7] = 1;
+
+  EXPECT_EQ(v2, expv);
 }
 
 TEST(TVector, copied_vector_has_its_own_memory)
@@ -73,38 +76,45 @@ TEST(TVector, throws_when_set_element_with_negative_index)
 {
   TVector<int> v(5);
   
-  ASSERT_ANY_THROW(v[-1]);
+  ASSERT_ANY_THROW(v[-1] = 1);
 }
 
 TEST(TVector, throws_when_set_element_with_too_large_index)
 {
   TVector<int> v(5);
   
-  ASSERT_ANY_THROW(v[100000001]);
+  ASSERT_ANY_THROW(v[6] = 1);
 }
 
 TEST(TVector, can_assign_vector_to_itself)
 {
-  TVector<int> v(5);
-  
+  TVector<int> v(5), expv(5);
+  v[3] = 1;
+  expv[3] = 1;
   ASSERT_NO_THROW(v = v);
+  v = v;
+  EXPECT_EQ(v, expv);
 }
 
 TEST(TVector, can_assign_vectors_of_equal_size)
 {
   int size = 3;
-  TVector<int> v(size), v1(size);
-  v[1] = 1; //v=010
+  TVector<int> v(size), v1(size), expv(size);
+  v[1] = 1; 
+  v[2] = 2; //v=012
+  expv[1] = 1;
+  expv[2] = 2;
+  
   v1 = v;
   
-  EXPECT_EQ(v[0], v1[0]);
-  EXPECT_EQ(v[1], v1[1]);
-  EXPECT_EQ(v[2], v1[2]);
+  EXPECT_EQ(v1, expv);
 }
 
 TEST(TVector, assign_operator_change_vector_size)
 {
   TVector<int> v(10), v1(5);
+  v[1] = 1;
+  v1[2] = 2;
   v = v1;
   
   EXPECT_EQ(v.GetSize(), v1.GetSize());
@@ -112,12 +122,13 @@ TEST(TVector, assign_operator_change_vector_size)
 
 TEST(TVector, can_assign_vectors_of_different_size)
 {
-  TVector<int> v(2), v1(3);
-  v[1] = 1; //v1=01
+  TVector<int> v(2), v1(3), expv(2);
+  v[1] = 1; //v=01
+  expv[1] = 1;
+  v1[2] = 2; //v1=002
   v1 = v;
   
-  EXPECT_EQ(v[0], v1[0]);
-  EXPECT_EQ(v[1], v1[1]);
+  EXPECT_EQ(v1, expv);
 }
 
 TEST(TVector, compare_equal_vectors_return_true)
